@@ -35,4 +35,4 @@ jobs:
     - name: Test with pytest
       run: |
         pip install -r test-requirements.txt -r requirements.txt
-        pytest -vvra --cov docker --cov-report term
+        pytest -vvra --cov docker_device_requests --cov-report term
