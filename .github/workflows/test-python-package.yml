@@ -1,0 +1,38 @@
+name: test
+
+on:
+  pull_request:
+    branches:
+      - master
+      - device-requests_4.2.0
+  push:
+    branches:
+      - master
+      - device-requests_4.2.0
+    tags:
+      - v*
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Update pip
+      run: pip install -U pip
+    - name: Install package
+      run: pip install -e .
+    - name: Lint with flake8
+      run: |
+        pip install -r tests-requirements.txt
+        flake8 src tests setup.py
+    - name: Test with pytest
+      run: |
+        pip install -r tests-requirements.txt -r requirements.txt
+        pytest -vvra --cov docker --cov-report term
