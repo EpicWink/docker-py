@@ -30,9 +30,9 @@ jobs:
       run: pip install -e .
     - name: Lint with flake8
       run: |
-        pip install -r tests-requirements.txt
+        pip install -r test-requirements.txt
         flake8 src tests setup.py
     - name: Test with pytest
       run: |
-        pip install -r tests-requirements.txt -r requirements.txt
+        pip install -r test-requirements.txt -r requirements.txt
         pytest -vvra --cov docker --cov-report term

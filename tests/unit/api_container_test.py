@@ -9,11 +9,6 @@ from .api_test import (
     fake_inspect_container
 )
 
-try:
-    from unittest import mock
-except ImportError:
-    import mock
-
 
 def fake_inspect_container_tty(self, container):
     return fake_inspect_container(self, container, tty=True)
