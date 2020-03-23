@@ -2,6 +2,8 @@
 
 import json
 
+from docker.api import APIClient
+
 from .api_test import (
     BaseAPIClientTest, url_prefix, fake_request, DEFAULT_TIMEOUT_SECONDS,
     fake_inspect_container
@@ -19,8 +21,9 @@ def fake_inspect_container_tty(self, container):
 
 class CreateContainerTest(BaseAPIClientTest):
     def test_create_container_with_device_requests(self):
-        self.client.create_container(
-            'busybox', 'true', host_config=self.client.create_host_config(
+        client = APIClient(version='1.40')
+        client.create_container(
+            'busybox', 'true', host_config=client.create_host_config(
                 device_requests=[
                     {
                         'device_ids': [
@@ -45,7 +48,7 @@ class CreateContainerTest(BaseAPIClientTest):
         args = fake_request.call_args
         assert args[0][1] == url_prefix + 'containers/create'
         expected_payload = self.base_create_payload()
-        expected_payload['HostConfig'] = self.client.create_host_config()
+        expected_payload['HostConfig'] = client.create_host_config()
         expected_payload['HostConfig']['DeviceRequests'] = [
             {
                 'Driver': '',
@@ -70,5 +73,5 @@ class CreateContainerTest(BaseAPIClientTest):
             }
         ]
         assert json.loads(args[1]['data']) == expected_payload
-        assert args[1]['headers'] == {'Content-Type': 'application/json'}
+        assert args[1]['headers']['Content-Type'] == 'application/json'
         assert args[1]['timeout'] == DEFAULT_TIMEOUT_SECONDS

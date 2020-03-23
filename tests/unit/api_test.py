@@ -77,7 +77,7 @@ def fake_read_from_socket(self, response, stream, tty=False, demux=False):
 
 
 url_base = '{0}/'.format(fake_api.prefix)
-url_prefix = '{0}v{1}/'.format(
+url_prefix = '{0}v1.40/'.format(
     url_base,
     docker.constants.DEFAULT_DOCKER_API_VERSION)
 
