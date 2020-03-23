@@ -108,7 +108,8 @@ class DeviceRequest(DictType):
 
 
 class HostConfig(_HostConfig):
-    def __init__(self, version, *args, device_requests=None, **kwargs):
+    def __init__(self, version, *args, **kwargs):
+        device_requests = kwargs.pop("device_requests", None)
         super().__init__(version, *args, **kwargs)
 
         if device_requests is not None:
